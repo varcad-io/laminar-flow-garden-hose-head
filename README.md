@@ -22,6 +22,9 @@ original mesh files:
 ```sh
 npm install
 npm run check
+npm run compare:geometry
+npm run export:stl -- --part base --out dist/base.stl
+npm run preview:summary
 ```
 
 Open `index.js` in varcad.io or another JSCAD viewer to inspect the model.
@@ -33,15 +36,19 @@ Implemented:
 - source inventory notes in `docs/source-inventory.md`
 - modular JSCAD files under `src/`
 - local Printables reference cache manifest under `references/printables-1319709/manifests/`
+- initial STEP inspection notes under `references/printables-1319709/manifests/step-inspection.md`
 - STL measurement script and measured dimensions for the original parts
 - reference-sized parametric body, cap, inlet, stage blockouts, lens holder, and screw bosses
+- per-part rendering through the `part` parameter
+- geometry comparison reports against cached STL references
+- generated STL export and preview-summary workflows
 - widget metadata in `widgets.json`
 
 Not implemented yet:
 
 - hose-thread geometry
-- diffuser cross-hatch internals
-- straightener channel lattice
+- exact diffuser cross-hatch parity
+- exact straightener channel lattice parity
 - lens/nozzle curvature tuning
 - gasket compression details
 
@@ -60,3 +67,31 @@ The current defaults are based on the cached Printables files:
 | Lens | 38.2 x 38.2 x 5.25 mm |
 
 Run `npm run measure:stl` to regenerate the measurement report.
+
+## Geometry Comparison
+
+`npm run compare:geometry` writes `dist/geometry-comparison.json`. The report
+compares generated JSCAD parts against the cached Printables STL references:
+
+- bounding box
+- center
+- approximate volume
+- generated polygon count versus STL triangle count
+
+The comparison is currently a development guide, not a pass/fail parity test.
+The generated model is intentionally lower detail than the source meshes.
+
+## Export And Preview
+
+- `npm run export:stl -- --part base --out dist/base.stl`
+- `npm run preview:summary`
+
+Supported `part` values:
+
+- `assembly`
+- `base`
+- `cap`
+- `lensHolder`
+- `straightener`
+- `diffuser`
+- `lens`

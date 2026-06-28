@@ -1,5 +1,23 @@
 [
   {
+    "type": "Dropdown",
+    "name": "part",
+    "description": "Generated part",
+    "range": "",
+    "options": "assembly,base,cap,lensHolder,straightener,diffuser,lens",
+    "defaultValue": "assembly",
+    "editMode": false
+  },
+  {
+    "type": "Dropdown",
+    "name": "baseVariant",
+    "description": "Base inlet variant",
+    "range": "",
+    "options": "gardena,threeQuarterGht",
+    "defaultValue": "gardena",
+    "editMode": false
+  },
+  {
     "type": "Slider",
     "name": "bodyLength",
     "description": "Overall body length in millimeters",

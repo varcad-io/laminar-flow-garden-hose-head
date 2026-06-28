@@ -9,6 +9,14 @@ function readVector(buffer, offset) {
   ];
 }
 
+function triangleSignedVolume(a, b, c) {
+  return (
+    a[0] * (b[1] * c[2] - b[2] * c[1]) -
+    a[1] * (b[0] * c[2] - b[2] * c[0]) +
+    a[2] * (b[0] * c[1] - b[1] * c[0])
+  ) / 6;
+}
+
 function measureBinaryStl(filePath) {
   const buffer = fs.readFileSync(filePath);
   if (buffer.length < 84) {
@@ -24,17 +32,21 @@ function measureBinaryStl(filePath) {
   const min = [Infinity, Infinity, Infinity];
   const max = [-Infinity, -Infinity, -Infinity];
   let vertexCount = 0;
+  let signedVolume = 0;
 
   for (let i = 0; i < triangleCount; i += 1) {
     const triangleOffset = 84 + i * 50;
+    const triangle = [];
     for (let vertexIndex = 0; vertexIndex < 3; vertexIndex += 1) {
       const vertex = readVector(buffer, triangleOffset + 12 + vertexIndex * 12);
+      triangle.push(vertex);
       for (let axis = 0; axis < 3; axis += 1) {
         min[axis] = Math.min(min[axis], vertex[axis]);
         max[axis] = Math.max(max[axis], vertex[axis]);
       }
       vertexCount += 1;
     }
+    signedVolume += triangleSignedVolume(triangle[0], triangle[1], triangle[2]);
   }
 
   return {
@@ -43,7 +55,8 @@ function measureBinaryStl(filePath) {
     min,
     max,
     size: max.map((value, axis) => value - min[axis]),
-    center: max.map((value, axis) => (value + min[axis]) / 2)
+    center: max.map((value, axis) => (value + min[axis]) / 2),
+    volume: Math.abs(signedVolume)
   };
 }
 
@@ -52,14 +65,21 @@ function measureAsciiStl(filePath) {
   const min = [Infinity, Infinity, Infinity];
   const max = [-Infinity, -Infinity, -Infinity];
   let vertexCount = 0;
+  let signedVolume = 0;
+  let triangle = [];
 
   for (const match of text.matchAll(/vertex\s+([-+0-9.eE]+)\s+([-+0-9.eE]+)\s+([-+0-9.eE]+)/g)) {
     const vertex = [Number(match[1]), Number(match[2]), Number(match[3])];
+    triangle.push(vertex);
     for (let axis = 0; axis < 3; axis += 1) {
       min[axis] = Math.min(min[axis], vertex[axis]);
       max[axis] = Math.max(max[axis], vertex[axis]);
     }
     vertexCount += 1;
+    if (triangle.length === 3) {
+      signedVolume += triangleSignedVolume(triangle[0], triangle[1], triangle[2]);
+      triangle = [];
+    }
   }
 
   if (vertexCount === 0) {
@@ -72,7 +92,8 @@ function measureAsciiStl(filePath) {
     min,
     max,
     size: max.map((value, axis) => value - min[axis]),
-    center: max.map((value, axis) => (value + min[axis]) / 2)
+    center: max.map((value, axis) => (value + min[axis]) / 2),
+    volume: Math.abs(signedVolume)
   };
 }
 

@@ -5,10 +5,13 @@
   "main": "index.js",
   "scripts": {
     "check": "node scripts/check.js",
-    "measure:stl": "node scripts/measure-stl.js"
+    "measure:stl": "node scripts/measure-stl.js",
+    "compare:geometry": "node scripts/compare-geometry.js --part all --out dist/geometry-comparison.json",
+    "export:stl": "node scripts/export-stl.js",
+    "preview:summary": "node scripts/generate-preview-summary.js"
   },
   "dependencies": {
-    "@jscad/modeling": "^2.12.6"
-  },
-  "devDependencies": {}
+    "@jscad/modeling": "^2.12.6",
+    "@jscad/stl-serializer": "^2.1.23"
+  }
 }

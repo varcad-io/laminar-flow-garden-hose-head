@@ -90,3 +90,10 @@ The current generated model defaults are based on
 | `06-stage-diffuser-aligned.stl` | 95.8 x 45.0 x 95.8 |
 | `08-stage-diffuser-crosshatch.stl` | 95.8 x 95.8 x 45.0 |
 | `09-lens-8mm.stl` | 38.2 x 38.2 x 5.25 |
+
+## Development Workflows
+
+- `npm run measure:stl` regenerates STL bounding-box and volume measurements.
+- `npm run compare:geometry` compares generated JSCAD parts to cached STL references.
+- `npm run export:stl -- --part base --out dist/base.stl` exports one generated part.
+- `npm run preview:summary` creates a lightweight SVG preview summary.

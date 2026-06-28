@@ -1,7 +1,7 @@
 const { colorize } = require('@jscad/modeling').colors;
 const { union, subtract } = require('@jscad/modeling').booleans;
 const { translate, rotate } = require('@jscad/modeling').transforms;
-const { cuboid, cylinder } = require('@jscad/modeling').primitives;
+const { cuboid, cylinder, roundedCuboid } = require('@jscad/modeling').primitives;
 
 const referenceDimensions = {
   baseGardena: {
@@ -24,6 +24,14 @@ const referenceDimensions = {
     sourceFile: 'references/printables-1319709/files/model/05-stage-straightener.stl',
     size: [95.8, 45, 95.8]
   },
+  stageDiffuserAligned: {
+    sourceFile: 'references/printables-1319709/files/model/06-stage-diffuser-aligned.stl',
+    size: [95.8, 45, 95.8]
+  },
+  stageDiffuserCrosshatch: {
+    sourceFile: 'references/printables-1319709/files/model/08-stage-diffuser-crosshatch.stl',
+    size: [95.8, 95.8, 45]
+  },
   lens: {
     sourceFile: 'references/printables-1319709/files/model/09-lens-8mm.stl',
     size: [38.2, 38.2, 5.25]
@@ -43,6 +51,7 @@ const defaultParameters = {
   lensWidth: referenceDimensions.lens.size[0],
   lensHeight: referenceDimensions.lens.size[2],
   baseVariant: 'gardena',
+  part: 'assembly',
   showCutaway: false,
   showStages: true
 };
@@ -58,6 +67,14 @@ const palette = {
 
 function box(size, center = [0, 0, 0]) {
   return translate(center, cuboid({ size }));
+}
+
+function roundedBox(size, center = [0, 0, 0], radius = 2) {
+  return translate(center, roundedCuboid({
+    size,
+    roundRadius: Math.min(radius, ...size.map((value) => value / 2 - 0.1)),
+    segments: 16
+  }));
 }
 
 function baseSizeForVariant(params) {
@@ -100,18 +117,18 @@ function base(params) {
   const chamberWidth = bodyWidth - params.wall * 5;
   const chamberHeight = bodyHeight - params.wall * 8;
 
-  const outer = box([baseLength, bodyWidth, bodyHeight]);
+  const outer = roundedBox([baseLength, bodyWidth, bodyHeight], [0, 0, 0], 2.5);
   const mainChamber = box([
     chamberLength,
     chamberWidth,
     chamberHeight
   ], [baseLength / 2 - referenceDimensions.cap.size[0] / 2, 0, params.wall * 2]);
 
-  const stagePocket = box([
+  const stagePocket = roundedBox([
     params.stageDepth + params.wall * 2,
     params.stageWidth + params.wall * 1.2,
     params.stageHeight + params.wall * 1.2
-  ], [0, 0, -params.wall]);
+  ], [0, 0, -params.wall], 1.5);
 
   const outletCut = box([
     params.wall * 4,
@@ -243,16 +260,13 @@ function lensHolder(params) {
     params.lensHeight * 1.5
   ], [baseLength / 2 + holderLength / 2 - params.wall, 0, 0]);
 
-  const lens = box([
-    params.lensHeight,
-    params.lensWidth,
-    params.lensHeight
-  ], [baseLength / 2 + holderLength - params.wall, 0, 0]);
+  return colorize(palette.cap, subtract(holder, slot));
+}
 
-  return union(
-    colorize(palette.cap, subtract(holder, slot)),
-    colorize(palette.lens, lens)
-  );
+function positionedLens(params) {
+  const [baseLength] = baseSizeForVariant(params);
+  const [holderLength] = referenceDimensions.lensHolder.size;
+  return translate([baseLength / 2 + holderLength - params.wall, 0, 0], lens(params));
 }
 
 function screwBosses(params) {
@@ -266,31 +280,107 @@ function screwBosses(params) {
   return colorize(palette.hardware, union(bosses));
 }
 
+function straightenerStage(params) {
+  const [stageX, stageY, stageZ] = referenceDimensions.stageStraightener.size;
+  const block = roundedBox([stageX, stageY, stageZ], [0, 0, 0], 1.2);
+  const channels = [];
+  const grid = 11;
+  const pitchX = stageX / (grid + 1);
+  const pitchZ = stageZ / (grid + 1);
+  const channelWidth = Math.min(pitchX, pitchZ) * 0.78;
+
+  for (let ix = 1; ix <= grid; ix += 1) {
+    for (let iz = 1; iz <= grid; iz += 1) {
+      const x = -stageX / 2 + pitchX * ix;
+      const z = -stageZ / 2 + pitchZ * iz;
+      channels.push(roundedBox([channelWidth, stageY + 2, channelWidth], [x, 0, z], channelWidth * 0.25));
+    }
+  }
+
+  return colorize([0.16, 0.62, 0.55, 1], subtract(block, union(channels)));
+}
+
+function diffuserStage(params) {
+  const [stageX, stageY, stageZ] = referenceDimensions.stageDiffuserCrosshatch.size;
+  const frame = roundedBox([stageX, stageY, stageZ], [0, 0, 0], 1.2);
+  const slots = [];
+  const slotCount = 12;
+  const slotWidth = 4.8;
+  const diagonalLength = Math.sqrt(stageX * stageX + stageY * stageY) + 8;
+
+  for (let i = 0; i < slotCount; i += 1) {
+    const offset = -stageY / 2 + ((i + 0.5) * stageY) / slotCount;
+    slots.push(rotate([0, 0, Math.PI / 4], box([diagonalLength, slotWidth, stageZ + 2], [0, offset, 0])));
+    slots.push(rotate([0, 0, -Math.PI / 4], box([diagonalLength, slotWidth, stageZ + 2], [0, offset, 0])));
+  }
+
+  return colorize(palette.stages, subtract(frame, union(slots)));
+}
+
+function lens(params) {
+  const [lensX, lensY, lensZ] = referenceDimensions.lens.size;
+  return colorize(palette.lens, roundedBox([lensX, lensY, lensZ], [0, 0, 0], 1.5));
+}
+
+function positionedStages(params) {
+  const [stageX, stageY] = referenceDimensions.stageStraightener.size;
+  return union(
+    translate([-stageY / 2 - params.wall, 0, 0], rotate([0, 0, Math.PI / 2], diffuserStage(params))),
+    translate([stageY / 2 + params.wall, 0, 0], straightenerStage(params))
+  );
+}
+
 function buildAssembly(params) {
   const parts = [
     flowBodyShell(params),
     cap(params),
     inlet(params),
     lensHolder(params),
+    positionedLens(params),
     screwBosses(params)
   ];
 
   if (params.showStages) {
-    parts.push(stages(params));
+    parts.push(positionedStages(params));
     parts.push(exitChamberMarker(params));
   }
 
   return union(parts);
 }
 
+function buildPart(params) {
+  switch (params.part) {
+    case 'base':
+      return base(params);
+    case 'cap':
+      return cap(params);
+    case 'lensHolder':
+      return lensHolder(params);
+    case 'straightener':
+      return straightenerStage(params);
+    case 'diffuser':
+      return diffuserStage(params);
+    case 'lens':
+      return lens(params);
+    case 'assembly':
+    default:
+      return buildAssembly(params);
+  }
+}
+
 module.exports = {
   defaultParameters,
   referenceDimensions,
   buildAssembly,
+  buildPart,
   base,
   flowBodyShell,
   cap,
   inlet,
   stages,
-  lensHolder
+  straightenerStage,
+  diffuserStage,
+  lensHolder,
+  positionedLens,
+  lens
 };
