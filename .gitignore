@@ -1,0 +1,7 @@
+node_modules/
+dist/
+*.stl
+*.3mf
+*.gcode
+*.bgcode
+.DS_Store

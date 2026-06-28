@@ -1,0 +1,27 @@
+{
+  "sourceUrl": "https://www.printables.com/model/1319709-laminar-flow-garden-hose-head-mk3",
+  "modelId": "1319709",
+  "slug": "laminar-flow-garden-hose-head-mk3",
+  "author": "smysnk",
+  "observedFileCount": 18,
+  "observedPrintFileCount": 5,
+  "observedPrintableParts": [
+    "Base",
+    "Cap",
+    "Lens Holder",
+    "Lens Holder Gasket",
+    "Stage - Diffuser",
+    "Stage - Straightener",
+    "Lens"
+  ],
+  "observedPrintSettings": {
+    "material": "PET/PETG",
+    "nozzleDiameterMm": 0.4,
+    "layerHeightMm": 0.25,
+    "printer": "Prusa MK4S"
+  },
+  "notes": [
+    "Direct source mesh files still need to be downloaded for dimensional parity.",
+    "The current JSCAD implementation is a parametric architecture blockout."
+  ]
+}

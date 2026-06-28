@@ -1,0 +1,50 @@
+[
+  {
+    "type": "Slider",
+    "name": "bodyLength",
+    "description": "Overall body length in millimeters",
+    "range": "120,220,1",
+    "defaultValue": "170",
+    "editMode": false
+  },
+  {
+    "type": "Slider",
+    "name": "bodyWidth",
+    "description": "Overall body width in millimeters",
+    "range": "60,150,1",
+    "defaultValue": "105",
+    "editMode": false
+  },
+  {
+    "type": "Slider",
+    "name": "bodyHeight",
+    "description": "Overall body height in millimeters",
+    "range": "35,95,1",
+    "defaultValue": "62",
+    "editMode": false
+  },
+  {
+    "type": "Slider",
+    "name": "wall",
+    "description": "Nominal wall thickness in millimeters",
+    "range": "2,8,0.25",
+    "defaultValue": "3.5",
+    "editMode": false
+  },
+  {
+    "type": "Slider",
+    "name": "inletDiameter",
+    "description": "Inlet outside diameter in millimeters",
+    "range": "18,36,0.5",
+    "defaultValue": "27",
+    "editMode": false
+  },
+  {
+    "type": "Slider",
+    "name": "stageWidth",
+    "description": "Flow-stage width in millimeters",
+    "range": "35,95,1",
+    "defaultValue": "68",
+    "editMode": false
+  }
+]
