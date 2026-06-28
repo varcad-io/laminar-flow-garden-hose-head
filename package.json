@@ -2,6 +2,7 @@
   "name": "laminar-flow-garden-hose-head-mk3",
   "version": "0.1.0",
   "description": "Parametric JSCAD interpretation of a staged laminar-flow garden hose head.",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "check": "node scripts/check.js",

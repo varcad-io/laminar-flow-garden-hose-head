@@ -1,8 +1,11 @@
-const fs = require('fs');
-const path = require('path');
-const { geometries, measurements } = require('@jscad/modeling');
-const { defaultParameters, buildPart, referenceDimensions } = require('../src/model');
-const { measureStl } = require('./measure-stl');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import modeling from '@jscad/modeling';
+import { defaultParameters, buildPart, referenceDimensions } from '../src/model.js';
+import { measureStl } from './measure-stl.js';
+
+const { geometries, measurements } = modeling;
 
 const referenceByPart = {
   base: referenceDimensions.baseGardena.sourceFile,
@@ -87,7 +90,9 @@ function comparePart(part, referencePath = referenceByPart[part]) {
   };
 }
 
-if (require.main === module) {
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
   const partArg = takeArg('--part', 'base');
   const outputPath = takeArg('--out', null);
   const summaryPath = takeArg('--summary-out', null);
@@ -158,4 +163,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { comparePart, generatedMetrics };
+export { comparePart, generatedMetrics };

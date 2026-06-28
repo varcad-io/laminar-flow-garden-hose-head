@@ -1,5 +1,6 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 function readVector(buffer, offset) {
   return [
@@ -132,7 +133,9 @@ function findStlFiles(root) {
   return files.sort();
 }
 
-if (require.main === module) {
+const isMain = process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url);
+
+if (isMain) {
   const target = process.argv[2] || 'references/printables-1319709/files/model';
   const targetPath = path.resolve(target);
   const files = fs.statSync(targetPath).isDirectory() ? findStlFiles(targetPath) : [targetPath];
@@ -140,4 +143,4 @@ if (require.main === module) {
   console.log(JSON.stringify(measurements, null, 2));
 }
 
-module.exports = { measureStl };
+export { measureStl };

@@ -1,9 +1,11 @@
-const { colorize } = require('@jscad/modeling').colors;
-const { union, subtract } = require('@jscad/modeling').booleans;
-const { translate, rotate } = require('@jscad/modeling').transforms;
-const { cuboid, cylinder, roundedCuboid } = require('@jscad/modeling').primitives;
+import modeling from '@jscad/modeling';
 
-const referenceDimensions = {
+const { colorize } = modeling.colors;
+const { union, subtract } = modeling.booleans;
+const { translate, rotate } = modeling.transforms;
+const { cuboid, cylinder, roundedCuboid } = modeling.primitives;
+
+export const referenceDimensions = {
   baseGardena: {
     sourceFile: 'references/printables-1319709/files/model/01-base-gardena.stl',
     size: [145.1, 119, 138.5]
@@ -38,7 +40,7 @@ const referenceDimensions = {
   }
 };
 
-const defaultParameters = {
+export const defaultParameters = {
   bodyLength: referenceDimensions.baseGardena.size[0],
   bodyWidth: referenceDimensions.baseGardena.size[1],
   bodyHeight: referenceDimensions.baseGardena.size[2],
@@ -403,9 +405,7 @@ function buildPart(params) {
   }
 }
 
-module.exports = {
-  defaultParameters,
-  referenceDimensions,
+export {
   buildAssembly,
   buildPart,
   base,

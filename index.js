@@ -1,6 +1,6 @@
-const { buildPart, defaultParameters } = require('./src/model');
+import { buildPart, defaultParameters } from './src/model.js';
 
-function getParameterDefinitions() {
+export function getParameterDefinitions() {
   return [
     { name: 'bodyLength', type: 'float', initial: defaultParameters.bodyLength, caption: 'Body length' },
     { name: 'bodyWidth', type: 'float', initial: defaultParameters.bodyWidth, caption: 'Body width' },
@@ -15,8 +15,6 @@ function getParameterDefinitions() {
   ];
 }
 
-function main(params = {}) {
+export function main(params = {}) {
   return buildPart({ ...defaultParameters, ...params });
 }
-
-module.exports = { main, getParameterDefinitions };

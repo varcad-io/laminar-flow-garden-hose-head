@@ -1,5 +1,7 @@
-const { geometries } = require('@jscad/modeling');
-const { main } = require('../index');
+import modeling from '@jscad/modeling';
+import { main } from '../index.js';
+
+const { geometries } = modeling;
 
 const parts = ['assembly', 'base', 'cap', 'lensHolder', 'straightener', 'diffuser', 'lens'];
 

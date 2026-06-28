@@ -1,7 +1,7 @@
-const fs = require('fs');
-const path = require('path');
-const { serialize } = require('@jscad/stl-serializer');
-const { defaultParameters, buildPart } = require('../src/model');
+import fs from 'fs';
+import path from 'path';
+import { serialize } from '@jscad/stl-serializer';
+import { defaultParameters, buildPart } from '../src/model.js';
 
 function takeArg(name, fallback = null) {
   const index = process.argv.indexOf(name);

@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const { generatedMetrics } = require('./compare-geometry');
+import fs from 'fs';
+import path from 'path';
+import { generatedMetrics } from './compare-geometry.js';
 
 const parts = ['base', 'cap', 'lensHolder', 'straightener', 'diffuser', 'lens'];
 const metrics = parts.map(generatedMetrics);
