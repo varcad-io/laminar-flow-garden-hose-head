@@ -3,24 +3,24 @@
     "type": "Slider",
     "name": "bodyLength",
     "description": "Overall body length in millimeters",
-    "range": "120,220,1",
-    "defaultValue": "170",
+    "range": "120,160,0.1",
+    "defaultValue": "145.1",
     "editMode": false
   },
   {
     "type": "Slider",
     "name": "bodyWidth",
     "description": "Overall body width in millimeters",
-    "range": "60,150,1",
-    "defaultValue": "105",
+    "range": "100,130,0.1",
+    "defaultValue": "119",
     "editMode": false
   },
   {
     "type": "Slider",
     "name": "bodyHeight",
     "description": "Overall body height in millimeters",
-    "range": "35,95,1",
-    "defaultValue": "62",
+    "range": "110,150,0.1",
+    "defaultValue": "138.5",
     "editMode": false
   },
   {
@@ -43,8 +43,8 @@
     "type": "Slider",
     "name": "stageWidth",
     "description": "Flow-stage width in millimeters",
-    "range": "35,95,1",
-    "defaultValue": "68",
+    "range": "80,105,0.1",
+    "defaultValue": "95.8",
     "editMode": false
   }
 ]

@@ -4,7 +4,8 @@
   "description": "Parametric JSCAD interpretation of a staged laminar-flow garden hose head.",
   "main": "index.js",
   "scripts": {
-    "check": "node scripts/check.js"
+    "check": "node scripts/check.js",
+    "measure:stl": "node scripts/measure-stl.js"
   },
   "dependencies": {
     "@jscad/modeling": "^2.12.6"

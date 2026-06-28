@@ -3,18 +3,46 @@ const { union, subtract } = require('@jscad/modeling').booleans;
 const { translate, rotate } = require('@jscad/modeling').transforms;
 const { cuboid, cylinder } = require('@jscad/modeling').primitives;
 
+const referenceDimensions = {
+  baseGardena: {
+    sourceFile: 'references/printables-1319709/files/model/01-base-gardena.stl',
+    size: [145.1, 119, 138.5]
+  },
+  baseThreeQuarterGht: {
+    sourceFile: 'references/printables-1319709/files/model/02-base-34-ght.stl',
+    size: [124.994, 119, 138.5]
+  },
+  cap: {
+    sourceFile: 'references/printables-1319709/files/model/03-cap.stl',
+    size: [119, 119, 23]
+  },
+  lensHolder: {
+    sourceFile: 'references/printables-1319709/files/model/04-cap-lens-holder.stl',
+    size: [80, 45, 14.25]
+  },
+  stageStraightener: {
+    sourceFile: 'references/printables-1319709/files/model/05-stage-straightener.stl',
+    size: [95.8, 45, 95.8]
+  },
+  lens: {
+    sourceFile: 'references/printables-1319709/files/model/09-lens-8mm.stl',
+    size: [38.2, 38.2, 5.25]
+  }
+};
+
 const defaultParameters = {
-  bodyLength: 170,
-  bodyWidth: 105,
-  bodyHeight: 62,
+  bodyLength: referenceDimensions.baseGardena.size[0],
+  bodyWidth: referenceDimensions.baseGardena.size[1],
+  bodyHeight: referenceDimensions.baseGardena.size[2],
   wall: 3.5,
   inletDiameter: 27,
   inletLength: 42,
-  stageWidth: 68,
-  stageHeight: 38,
-  stageDepth: 14,
-  lensWidth: 58,
-  lensHeight: 18,
+  stageWidth: referenceDimensions.stageStraightener.size[0],
+  stageHeight: referenceDimensions.stageStraightener.size[2],
+  stageDepth: referenceDimensions.stageStraightener.size[1],
+  lensWidth: referenceDimensions.lens.size[0],
+  lensHeight: referenceDimensions.lens.size[2],
+  baseVariant: 'gardena',
   showCutaway: false,
   showStages: true
 };
@@ -32,46 +60,107 @@ function box(size, center = [0, 0, 0]) {
   return translate(center, cuboid({ size }));
 }
 
+function baseSizeForVariant(params) {
+  if (params.baseVariant === 'threeQuarterGht') {
+    return referenceDimensions.baseThreeQuarterGht.size;
+  }
+  return [
+    Number(params.bodyLength) || referenceDimensions.baseGardena.size[0],
+    Number(params.bodyWidth) || referenceDimensions.baseGardena.size[1],
+    Number(params.bodyHeight) || referenceDimensions.baseGardena.size[2]
+  ];
+}
+
+function screwPatternPositions(params, z) {
+  const [, bodyWidth] = baseSizeForVariant(params);
+  const bodyLength = referenceDimensions.cap.size[0];
+  const inset = params.wall * 3.5;
+  const x = bodyLength / 2 - inset;
+  const y = bodyWidth / 2 - inset;
+
+  return [
+    [-x, -y, z],
+    [0, -y, z],
+    [x, -y, z],
+    [-x, y, z],
+    [0, y, z],
+    [x, y, z],
+    [-x, 0, z],
+    [x, 0, z]
+  ];
+}
+
 function flowBodyShell(params) {
-  const outer = box([params.bodyLength, params.bodyWidth, params.bodyHeight]);
-  const inner = box([
-    params.bodyLength - params.wall * 2,
-    params.bodyWidth - params.wall * 2,
-    params.bodyHeight - params.wall * 2
-  ], [0, 0, params.wall]);
+  return base(params);
+}
+
+function base(params) {
+  const [baseLength, bodyWidth, bodyHeight] = baseSizeForVariant(params);
+  const chamberLength = referenceDimensions.cap.size[0] - params.wall * 4;
+  const chamberWidth = bodyWidth - params.wall * 5;
+  const chamberHeight = bodyHeight - params.wall * 8;
+
+  const outer = box([baseLength, bodyWidth, bodyHeight]);
+  const mainChamber = box([
+    chamberLength,
+    chamberWidth,
+    chamberHeight
+  ], [baseLength / 2 - referenceDimensions.cap.size[0] / 2, 0, params.wall * 2]);
+
+  const stagePocket = box([
+    params.stageDepth + params.wall * 2,
+    params.stageWidth + params.wall * 1.2,
+    params.stageHeight + params.wall * 1.2
+  ], [0, 0, -params.wall]);
 
   const outletCut = box([
     params.wall * 4,
     params.lensWidth,
-    params.lensHeight
-  ], [params.bodyLength / 2 - params.wall, 0, 4]);
+    Math.max(params.lensHeight * 3, 18)
+  ], [baseLength / 2 - params.wall, 0, 0]);
+
+  const inletBore = rotate(
+    [0, Math.PI / 2, 0],
+    cylinder({
+      height: params.inletLength + params.wall * 6,
+      radius: Math.max(params.inletDiameter / 2 - params.wall, 6),
+      segments: 64
+    })
+  );
+
+  const nutTrapCuts = screwPatternPositions(params, bodyHeight / 2 - params.wall * 2)
+    .map((position) => box([params.wall * 2.4, params.wall * 2.4, params.wall * 2.2], position));
 
   const cutaway = params.showCutaway
-    ? box([params.bodyLength + 4, params.bodyWidth / 2, params.bodyHeight + 8], [0, -params.bodyWidth / 4, 8])
+    ? box([baseLength + 4, bodyWidth / 2, bodyHeight + 8], [0, -bodyWidth / 4, 8])
     : null;
 
-  const cuts = cutaway ? union(inner, outletCut, cutaway) : union(inner, outletCut);
+  const cuts = cutaway
+    ? union(mainChamber, stagePocket, outletCut, inletBore, ...nutTrapCuts, cutaway)
+    : union(mainChamber, stagePocket, outletCut, inletBore, ...nutTrapCuts);
   return colorize(palette.body, subtract(outer, cuts));
 }
 
 function cap(params) {
-  const capThickness = params.wall * 2.4;
+  const [, bodyWidth, bodyHeight] = baseSizeForVariant(params);
+  const [capLength, capWidth, capThickness] = referenceDimensions.cap.size;
   const plate = box([
-    params.bodyLength + params.wall * 2,
-    params.bodyWidth + params.wall * 2,
+    capLength,
+    capWidth,
     capThickness
-  ], [0, 0, params.bodyHeight / 2 + capThickness / 2 + 1]);
+  ], [0, 0, bodyHeight / 2 + capThickness / 2 + 1]);
 
   const rebate = box([
-    params.bodyLength - params.wall * 3,
-    params.bodyWidth - params.wall * 3,
+    capLength - params.wall * 3,
+    bodyWidth - params.wall * 3,
     capThickness + 2
-  ], [0, 0, params.bodyHeight / 2 + capThickness / 2 + 1]);
+  ], [0, 0, bodyHeight / 2 + capThickness / 2 + 1]);
 
   return colorize(palette.cap, subtract(plate, rebate));
 }
 
 function inlet(params) {
+  const [baseLength, , bodyHeight] = baseSizeForVariant(params);
   const inletOuter = rotate(
     [0, Math.PI / 2, 0],
     cylinder({
@@ -92,7 +181,7 @@ function inlet(params) {
   return colorize(
     palette.body,
     translate(
-      [-params.bodyLength / 2 - params.inletLength / 2 + params.wall, 0, params.bodyHeight * 0.2],
+      [-baseLength / 2 - params.inletLength / 2 + params.wall, 0, bodyHeight * 0.2],
       subtract(inletOuter, inletBore)
     )
   );
@@ -128,34 +217,37 @@ function stages(params) {
 }
 
 function exitChamberMarker(params) {
+  const [baseLength] = baseSizeForVariant(params);
   return colorize(
     palette.cavity,
     box([
-      params.bodyLength * 0.22,
+      baseLength * 0.22,
       params.stageWidth,
       params.stageHeight
-    ], [params.bodyLength * 0.28, 0, 0])
+    ], [baseLength * 0.28, 0, 0])
   );
 }
 
 function lensHolder(params) {
+  const [baseLength] = baseSizeForVariant(params);
+  const [holderLength, holderWidth, holderHeight] = referenceDimensions.lensHolder.size;
   const holder = box([
-    params.wall * 5,
-    params.lensWidth + params.wall * 5,
-    params.lensHeight + params.wall * 5
-  ], [params.bodyLength / 2 + params.wall * 2, 0, 0]);
+    holderLength,
+    holderWidth,
+    holderHeight
+  ], [baseLength / 2 + holderLength / 2 - params.wall, 0, 0]);
 
   const slot = box([
-    params.wall * 5 + 2,
+    holderLength + 2,
     params.lensWidth,
-    params.lensHeight
-  ], [params.bodyLength / 2 + params.wall * 2, 0, 0]);
+    params.lensHeight * 1.5
+  ], [baseLength / 2 + holderLength / 2 - params.wall, 0, 0]);
 
   const lens = box([
-    params.wall * 1.5,
+    params.lensHeight,
     params.lensWidth,
-    params.lensHeight * 0.65
-  ], [params.bodyLength / 2 + params.wall * 5.5, 0, 0]);
+    params.lensHeight
+  ], [baseLength / 2 + holderLength - params.wall, 0, 0]);
 
   return union(
     colorize(palette.cap, subtract(holder, slot)),
@@ -164,19 +256,12 @@ function lensHolder(params) {
 }
 
 function screwBosses(params) {
-  const bosses = [];
-  const x = params.bodyLength / 2 - params.wall * 4;
-  const y = params.bodyWidth / 2 - params.wall * 4;
-  const z = params.bodyHeight / 2 + params.wall;
-
-  for (const sx of [-1, 1]) {
-    for (const sy of [-1, 1]) {
-      bosses.push(translate(
-        [sx * x, sy * y, z],
-        cylinder({ height: params.wall * 3, radius: params.wall * 1.9, segments: 32 })
-      ));
-    }
-  }
+  const [, , bodyHeight] = baseSizeForVariant(params);
+  const bosses = screwPatternPositions(params, bodyHeight / 2 + params.wall)
+    .map((position) => translate(
+      position,
+      cylinder({ height: params.wall * 3, radius: params.wall * 1.9, segments: 32 })
+    ));
 
   return colorize(palette.hardware, union(bosses));
 }
@@ -200,7 +285,9 @@ function buildAssembly(params) {
 
 module.exports = {
   defaultParameters,
+  referenceDimensions,
   buildAssembly,
+  base,
   flowBodyShell,
   cap,
   inlet,

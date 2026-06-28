@@ -58,10 +58,15 @@ Important design intent captured from the model description:
 
 ## Conversion Notes
 
-This repository does not yet include the original STL/3MF/G-code assets. The
-first JSCAD milestone uses the public model description and visible file
-inventory to build a parametric architecture. Exact mesh matching should follow
-after downloading the source files and measuring:
+The original Printables model/source and print files are cached locally under
+`references/printables-1319709/files/`. That directory is git-ignored because it
+contains large third-party binary assets. The committed manifests under
+`references/printables-1319709/manifests/` record the expected file names,
+sizes, and SHA-256 hashes.
+
+The first JSCAD milestone still uses the public model description and visible
+file inventory to build a parametric architecture. Exact mesh matching should
+now follow by measuring:
 
 - bounding boxes for each printable part
 - screw boss and nut-trap placement
@@ -70,3 +75,18 @@ after downloading the source files and measuring:
 - stage clearances
 - lens slot and gasket compression dimensions
 
+## Measured Bounding Boxes
+
+The current generated model defaults are based on
+`references/printables-1319709/manifests/stl-measurements.json`.
+
+| File | Bounding box, mm |
+| --- | ---: |
+| `01-base-gardena.stl` | 145.1 x 119.0 x 138.5 |
+| `02-base-34-ght.stl` | 125.0 x 119.0 x 138.5 |
+| `03-cap.stl` | 119.0 x 119.0 x 23.0 |
+| `04-cap-lens-holder.stl` | 80.0 x 45.0 x 14.25 |
+| `05-stage-straightener.stl` | 95.8 x 45.0 x 95.8 |
+| `06-stage-diffuser-aligned.stl` | 95.8 x 45.0 x 95.8 |
+| `08-stage-diffuser-crosshatch.stl` | 95.8 x 95.8 x 45.0 |
+| `09-lens-8mm.stl` | 38.2 x 38.2 x 5.25 |

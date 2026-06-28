@@ -32,15 +32,31 @@ Implemented:
 
 - source inventory notes in `docs/source-inventory.md`
 - modular JSCAD files under `src/`
-- parametric body, cap, inlet, stage blockouts, lens holder, and screw bosses
+- local Printables reference cache manifest under `references/printables-1319709/manifests/`
+- STL measurement script and measured dimensions for the original parts
+- reference-sized parametric body, cap, inlet, stage blockouts, lens holder, and screw bosses
 - widget metadata in `widgets.json`
 
 Not implemented yet:
 
-- exact dimensions from source STL/CAD files
 - hose-thread geometry
 - diffuser cross-hatch internals
 - straightener channel lattice
 - lens/nozzle curvature tuning
 - gasket compression details
 
+## Reference Measurements
+
+The current defaults are based on the cached Printables files:
+
+| Part | Measured bounding box |
+| --- | ---: |
+| Base, Gardena | 145.1 x 119.0 x 138.5 mm |
+| Base, 3/4 GHT | 125.0 x 119.0 x 138.5 mm |
+| Cap | 119.0 x 119.0 x 23.0 mm |
+| Lens holder | 80.0 x 45.0 x 14.25 mm |
+| Straightener stage | 95.8 x 45.0 x 95.8 mm |
+| Diffuser stage, crosshatch | 95.8 x 95.8 x 45.0 mm |
+| Lens | 38.2 x 38.2 x 5.25 mm |
+
+Run `npm run measure:stl` to regenerate the measurement report.
