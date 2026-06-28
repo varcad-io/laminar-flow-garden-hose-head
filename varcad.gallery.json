@@ -1,0 +1,16 @@
+{
+  "galleries": [
+    {
+      "name": "Default",
+      "images": [
+        {
+          "kind": "image",
+          "title": "Laminar hose head preview summary",
+          "src": "assets/preview-summary.svg",
+          "poster": "assets/preview-summary.svg",
+          "useAsRepositoryPreview": true
+        }
+      ]
+    }
+  ]
+}
