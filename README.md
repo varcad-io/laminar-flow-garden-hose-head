@@ -78,6 +78,9 @@ compares generated JSCAD parts against the cached Printables STL references:
 - approximate volume
 - generated polygon count versus STL triangle count
 
+It also writes a compact table to `dist/geometry-comparison.md`. For a
+threshold-oriented check, run `npm run compare:geometry:thresholds`.
+
 The comparison is currently a development guide, not a pass/fail parity test.
 The generated model is intentionally lower detail than the source meshes.
 

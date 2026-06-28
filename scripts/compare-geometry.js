@@ -19,8 +19,17 @@ function takeArg(name, fallback = null) {
   return process.argv[index + 1] || fallback;
 }
 
+function hasFlag(name) {
+  return process.argv.includes(name);
+}
+
 function round(value) {
   return Math.round(value * 1000) / 1000;
+}
+
+function percentDelta(generated, reference) {
+  if (!Number.isFinite(reference) || reference === 0) return null;
+  return round(((generated - reference) / reference) * 100);
 }
 
 function roundArray(values) {
@@ -81,21 +90,72 @@ function comparePart(part, referencePath = referenceByPart[part]) {
 if (require.main === module) {
   const partArg = takeArg('--part', 'base');
   const outputPath = takeArg('--out', null);
+  const summaryPath = takeArg('--summary-out', null);
+  const maxSizeDelta = Number(takeArg('--max-size-delta', '0.25'));
+  const maxVolumeDeltaPercent = Number(takeArg('--max-volume-delta-percent', '75'));
+  const failOnThreshold = hasFlag('--fail-on-threshold');
   const parts = partArg === 'all'
     ? Object.keys(referenceByPart)
     : partArg.split(',').map((part) => part.trim()).filter(Boolean);
 
   const report = {
     generatedAt: new Date().toISOString(),
+    thresholds: {
+      maxSizeDelta,
+      maxVolumeDeltaPercent
+    },
     parts: parts.map((part) => comparePart(part))
   };
+
+  report.summary = report.parts.map((entry) => {
+    const maxAbsSizeDelta = Math.max(...entry.delta.size.map((value) => Math.abs(value)));
+    const volumeDeltaPercent = percentDelta(entry.generated.volume, entry.reference.volume);
+    const withinSize = maxAbsSizeDelta <= maxSizeDelta;
+    const withinVolume = Math.abs(volumeDeltaPercent || 0) <= maxVolumeDeltaPercent;
+    const suggestedNextTarget = !withinSize
+      ? 'match bounding box'
+      : !withinVolume
+        ? 'reduce volume mismatch'
+        : 'improve feature/detail parity';
+    return {
+      part: entry.part,
+      generatedSize: entry.generated.size.join(' x '),
+      referenceSize: entry.reference.size.join(' x '),
+      maxAbsSizeDelta,
+      generatedVolume: entry.generated.volume,
+      referenceVolume: entry.reference.volume,
+      volumeDelta: entry.delta.volume,
+      volumeDeltaPercent,
+      polygonDelta: entry.delta.polygonCount,
+      withinSize,
+      withinVolume,
+      suggestedNextTarget
+    };
+  });
 
   const json = JSON.stringify(report, null, 2) + '\n';
   if (outputPath) {
     fs.mkdirSync(path.dirname(outputPath), { recursive: true });
     fs.writeFileSync(outputPath, json);
   }
+  if (summaryPath) {
+    fs.mkdirSync(path.dirname(summaryPath), { recursive: true });
+    const rows = [
+      '| Part | Max bbox delta | Volume delta | Polygon delta | Next target |',
+      '| --- | ---: | ---: | ---: | --- |',
+      ...report.summary.map((entry) => `| ${entry.part} | ${entry.maxAbsSizeDelta} mm | ${entry.volumeDeltaPercent}% | ${entry.polygonDelta} | ${entry.suggestedNextTarget} |`)
+    ];
+    fs.writeFileSync(summaryPath, `${rows.join('\n')}\n`);
+  }
   process.stdout.write(json);
+
+  if (failOnThreshold) {
+    const failing = report.summary.filter((entry) => !entry.withinSize || !entry.withinVolume);
+    if (failing.length > 0) {
+      process.stderr.write(`Geometry thresholds failed for: ${failing.map((entry) => entry.part).join(', ')}\n`);
+      process.exit(1);
+    }
+  }
 }
 
 module.exports = { comparePart, generatedMetrics };

@@ -113,16 +113,51 @@ function flowBodyShell(params) {
 
 function base(params) {
   const [baseLength, bodyWidth, bodyHeight] = baseSizeForVariant(params);
-  const chamberLength = referenceDimensions.cap.size[0] - params.wall * 4;
+  const chamberLength = baseLength - params.wall * 7;
   const chamberWidth = bodyWidth - params.wall * 5;
-  const chamberHeight = bodyHeight - params.wall * 8;
+  const chamberHeight = bodyHeight - params.wall * 2.6;
 
   const outer = roundedBox([baseLength, bodyWidth, bodyHeight], [0, 0, 0], 2.5);
   const mainChamber = box([
     chamberLength,
     chamberWidth,
     chamberHeight
-  ], [baseLength / 2 - referenceDimensions.cap.size[0] / 2, 0, params.wall * 2]);
+  ], [params.wall * 1.4, 0, params.wall * 3.4]);
+
+  const topOpening = box([
+    referenceDimensions.cap.size[0] - params.wall * 4,
+    bodyWidth - params.wall * 4,
+    bodyHeight * 0.72
+  ], [baseLength / 2 - referenceDimensions.cap.size[0] / 2, 0, bodyHeight * 0.28]);
+
+  const entryChamber = roundedBox([
+    Math.max(params.inletLength * 1.25, 48),
+    bodyWidth - params.wall * 7,
+    bodyHeight - params.wall * 9
+  ], [-baseLength * 0.24, 0, params.wall * 1.5], 2);
+
+  const exitChamber = roundedBox([
+    baseLength * 0.34,
+    bodyWidth - params.wall * 7,
+    bodyHeight - params.wall * 8
+  ], [baseLength * 0.23, 0, params.wall * 1.5], 2);
+
+  const undersideRelief = roundedBox([
+    baseLength - params.wall * 8,
+    bodyWidth - params.wall * 7,
+    bodyHeight * 0.68
+  ], [0, 0, -bodyHeight * 0.2], 2);
+
+  const sideReliefs = [
+    [-baseLength * 0.27, -bodyWidth * 0.44, -bodyHeight * 0.02],
+    [baseLength * 0.27, -bodyWidth * 0.44, -bodyHeight * 0.02],
+    [-baseLength * 0.27, bodyWidth * 0.44, -bodyHeight * 0.02],
+    [baseLength * 0.27, bodyWidth * 0.44, -bodyHeight * 0.02]
+  ].map((position) => roundedBox([
+    baseLength * 0.34,
+    bodyWidth * 0.34,
+    bodyHeight * 0.74
+  ], position, 2));
 
   const stagePocket = roundedBox([
     params.stageDepth + params.wall * 2,
@@ -153,8 +188,8 @@ function base(params) {
     : null;
 
   const cuts = cutaway
-    ? union(mainChamber, stagePocket, outletCut, inletBore, ...nutTrapCuts, cutaway)
-    : union(mainChamber, stagePocket, outletCut, inletBore, ...nutTrapCuts);
+    ? union(mainChamber, topOpening, entryChamber, exitChamber, undersideRelief, ...sideReliefs, stagePocket, outletCut, inletBore, ...nutTrapCuts, cutaway)
+    : union(mainChamber, topOpening, entryChamber, exitChamber, undersideRelief, ...sideReliefs, stagePocket, outletCut, inletBore, ...nutTrapCuts);
   return colorize(palette.body, subtract(outer, cuts));
 }
 

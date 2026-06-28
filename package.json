@@ -6,7 +6,8 @@
   "scripts": {
     "check": "node scripts/check.js",
     "measure:stl": "node scripts/measure-stl.js",
-    "compare:geometry": "node scripts/compare-geometry.js --part all --out dist/geometry-comparison.json",
+    "compare:geometry": "node scripts/compare-geometry.js --part all --out dist/geometry-comparison.json --summary-out dist/geometry-comparison.md",
+    "compare:geometry:thresholds": "node scripts/compare-geometry.js --part all --max-size-delta 0.25 --max-volume-delta-percent 150 --fail-on-threshold",
     "export:stl": "node scripts/export-stl.js",
     "preview:summary": "node scripts/generate-preview-summary.js"
   },
