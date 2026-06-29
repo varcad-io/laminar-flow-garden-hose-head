@@ -1,0 +1,6 @@
+{
+  "title": "Laminar Flow Garden Hose Head",
+  "entryPath": "/index.js",
+  "linkedLibraries": ["JSCAD Modeling"],
+  "features": ["jscad", "widgets", "multifile", "parametric", "showcase"]
+}

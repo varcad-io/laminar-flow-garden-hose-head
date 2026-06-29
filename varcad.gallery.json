@@ -9,6 +9,18 @@
           "src": "assets/preview-summary.svg",
           "poster": "assets/preview-summary.svg",
           "useAsRepositoryPreview": true
+        },
+        {
+          "kind": "image",
+          "title": "Constructed assembly descriptor render",
+          "src": "assets/assembly-constructed.svg",
+          "poster": "assets/assembly-constructed.svg"
+        },
+        {
+          "kind": "image",
+          "title": "Exploded assembly descriptor render",
+          "src": "assets/assembly-exploded.svg",
+          "poster": "assets/assembly-exploded.svg"
         }
       ]
     }

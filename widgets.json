@@ -1,68 +1,127 @@
 [
   {
     "type": "Dropdown",
-    "name": "part",
-    "description": "Generated part",
+    "name": "version",
+    "description": "Reference Printables revision",
     "range": "",
-    "options": "assembly,base,cap,lensHolder,straightener,diffuser,lens",
+    "options": "mk3,mk2_2,mk2_1,mk2_0",
+    "defaultValue": "mk3",
+    "editMode": false
+  },
+  {
+    "type": "Dropdown",
+    "name": "part",
+    "description": "Reference STL part or assembled scene",
+    "range": "",
+    "options": [
+      {
+        "value": "assembly",
+        "label": "assembly"
+      },
+      {
+        "value": "base",
+        "label": "base"
+      },
+      {
+        "value": "cap",
+        "label": "cap",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "equals",
+          "value": "mk3"
+        }
+      },
+      {
+        "value": "lensHolder",
+        "label": "lensHolder",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "equals",
+          "value": "mk3"
+        }
+      },
+      {
+        "value": "straightener",
+        "label": "straightener",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "equals",
+          "value": "mk3"
+        }
+      },
+      {
+        "value": "diffuser",
+        "label": "diffuser",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "equals",
+          "value": "mk3"
+        }
+      },
+      {
+        "value": "lens",
+        "label": "lens"
+      }
+    ],
     "defaultValue": "assembly",
     "editMode": false
   },
   {
     "type": "Dropdown",
     "name": "baseVariant",
-    "description": "Base inlet variant",
+    "description": "Base STL variant",
     "range": "",
-    "options": "gardena,threeQuarterGht",
+    "options": [
+      {
+        "value": "gardena",
+        "label": "gardena"
+      },
+      {
+        "value": "threeQuarterGht",
+        "label": "threeQuarterGht",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "in",
+          "values": ["mk3", "mk2_2", "mk2_1"]
+        }
+      },
+      {
+        "value": "threeQuarterNpt",
+        "label": "threeQuarterNpt",
+        "visibleWhen": {
+          "field": "version",
+          "operator": "equals",
+          "value": "mk2_0"
+        }
+      }
+    ],
     "defaultValue": "gardena",
     "editMode": false
   },
   {
     "type": "Slider",
-    "name": "bodyLength",
-    "description": "Overall body length in millimeters",
-    "range": "120,160,0.1",
-    "defaultValue": "145.1",
+    "name": "explode",
+    "description": "Separate assembled STL parts for inspection",
+    "range": "0,1,0.01",
+    "defaultValue": "0",
+    "updateMode": "transform",
+    "visibleWhen": {
+      "field": "version",
+      "operator": "equals",
+      "value": "mk3"
+    },
     "editMode": false
   },
   {
-    "type": "Slider",
-    "name": "bodyWidth",
-    "description": "Overall body width in millimeters",
-    "range": "100,130,0.1",
-    "defaultValue": "119",
-    "editMode": false
-  },
-  {
-    "type": "Slider",
-    "name": "bodyHeight",
-    "description": "Overall body height in millimeters",
-    "range": "110,150,0.1",
-    "defaultValue": "138.5",
-    "editMode": false
-  },
-  {
-    "type": "Slider",
-    "name": "wall",
-    "description": "Nominal wall thickness in millimeters",
-    "range": "2,8,0.25",
-    "defaultValue": "3.5",
-    "editMode": false
-  },
-  {
-    "type": "Slider",
-    "name": "inletDiameter",
-    "description": "Inlet outside diameter in millimeters",
-    "range": "18,36,0.5",
-    "defaultValue": "27",
-    "editMode": false
-  },
-  {
-    "type": "Slider",
-    "name": "stageWidth",
-    "description": "Flow-stage width in millimeters",
-    "range": "80,105,0.1",
-    "defaultValue": "95.8",
+    "type": "Checkbox",
+    "name": "showStages",
+    "description": "Show the internal stage STL parts in assembly mode",
+    "defaultValue": true,
+    "visibleWhen": {
+      "field": "version",
+      "operator": "equals",
+      "value": "mk3"
+    },
     "editMode": false
   }
 ]

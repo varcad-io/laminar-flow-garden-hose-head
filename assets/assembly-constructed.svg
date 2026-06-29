@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760">
+  <defs>
+    <marker id="axisArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="context-stroke"/>
+    </marker>
+  </defs>
+  <rect width="100%" height="100%" fill="#07111f"/>
+  <text x="72" y="54" fill="#f5fbff" font-size="30" font-family="Arial, sans-serif" font-weight="700">Laminar hose head constructed assembly</text>
+  <text x="72" y="82" fill="#98aec4" font-size="15" font-family="Arial, sans-serif">Descriptor layer preview, explode = 0</text>
+  
+    <g>
+      <rect x="928" y="96" width="204" height="152" rx="10" fill="#0b1a2b" stroke="#29445f" stroke-width="1"/>
+      <text x="950" y="126" fill="#dcecff" font-size="17" font-family="Arial, sans-serif" font-weight="700">Assembly axes</text>
+      
+      <line x1="990" y1="206" x2="1078" y2="206" stroke="#ff6266" stroke-width="4" marker-end="url(#axisArrow)"/>
+      <text x="1088" y="214" fill="#ff6266" font-size="24" font-family="Arial, sans-serif" font-weight="700">X</text>
+
+      <line x1="990" y1="206" x2="949.52" y2="234.16" stroke="#7fdf63" stroke-width="4" marker-end="url(#axisArrow)"/>
+      <text x="947.52" y="256.15999999999997" fill="#7fdf63" font-size="24" font-family="Arial, sans-serif" font-weight="700">Y</text>
+
+      <line x1="990" y1="206" x2="990" y2="118" stroke="#66aaff" stroke-width="4" marker-end="url(#axisArrow)"/>
+      <text x="986" y="106" fill="#66aaff" font-size="24" font-family="Arial, sans-serif" font-weight="700">Z</text>
+      <path d="M 1024 210 A 28 28 0 0 0 996 182" fill="none" stroke="#ff6266" stroke-width="3" marker-end="url(#axisArrow)"/>
+      <text x="1008" y="177" fill="#ff6266" font-size="12" font-family="Arial, sans-serif" font-weight="700">X rotation</text>
+    </g>
+  <g>
+    <g>
+      <polygon points="589.44,671.88 589.44,602.77 598.93,602.77 598.93,671.88" fill="#c9b24c" stroke="#081321" stroke-width="1.2"/>
+<polygon points="589.44,671.88 598.93,671.88 567.14,694 557.64,694" fill="#b09c43" stroke="#081321" stroke-width="1.2"/>
+<polygon points="557.64,694 557.64,624.89 589.44,602.77 589.44,671.88" fill="#e1c856" stroke="#081321" stroke-width="1.2"/>
+<polygon points="598.93,671.88 598.93,602.77 567.14,624.89 567.14,694" fill="#98873a" stroke="#081321" stroke-width="1.2"/>
+<polygon points="589.44,602.77 557.64,624.89 567.14,624.89 598.93,602.77" fill="#ffe261" stroke="#081321" stroke-width="1.2"/>
+<polygon points="567.14,694 567.14,624.89 557.64,624.89 557.64,694" fill="#ac9841" stroke="#081321" stroke-width="1.2"/>
+      <text x="575.14" y="616.89" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Lens</text>
+    </g>
+
+    <g>
+      <polygon points="584.12,635.36 584.12,490.63 609.91,490.63 609.91,635.36" fill="#c9b24c" stroke="#081321" stroke-width="1.2"/>
+<polygon points="584.12,635.36 609.91,635.36 572.46,661.41 546.67,661.41" fill="#b09c43" stroke="#081321" stroke-width="1.2"/>
+<polygon points="546.67,661.41 546.67,516.68 584.12,490.63 584.12,635.36" fill="#e1c856" stroke="#081321" stroke-width="1.2"/>
+<polygon points="609.91,635.36 609.91,490.63 572.46,516.68 572.46,661.41" fill="#98873a" stroke="#081321" stroke-width="1.2"/>
+<polygon points="584.12,490.63 546.67,516.68 572.46,516.68 609.91,490.63" fill="#ffe261" stroke="#081321" stroke-width="1.2"/>
+<polygon points="572.46,661.41 572.46,516.68 546.67,516.68 546.67,661.41" fill="#ac9841" stroke="#081321" stroke-width="1.2"/>
+      <text x="580.46" y="508.68" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Lens Holder</text>
+    </g>
+
+    <g>
+      <polygon points="577.45,484.69 577.45,311.37 658.86,311.37 658.86,484.69" fill="#4eaca3" stroke="#081321" stroke-width="1.2"/>
+<polygon points="577.45,484.69 658.86,484.69 579.13,540.16 497.72,540.16" fill="#44978f" stroke="#081321" stroke-width="1.2"/>
+<polygon points="497.72,540.16 497.72,366.84 577.45,311.37 577.45,484.69" fill="#57c1b7" stroke="#081321" stroke-width="1.2"/>
+<polygon points="658.86,484.69 658.86,311.37 579.13,366.84 579.13,540.16" fill="#3b827b" stroke="#081321" stroke-width="1.2"/>
+<polygon points="577.45,311.37 497.72,366.84 579.13,366.84 658.86,311.37" fill="#63dacf" stroke="#081321" stroke-width="1.2"/>
+<polygon points="579.13,540.16 579.13,366.84 497.72,366.84 497.72,540.16" fill="#43938b" stroke="#081321" stroke-width="1.2"/>
+      <text x="587.13" y="358.84" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Straightener Stage</text>
+    </g>
+
+    <g>
+      <polygon points="502.52,475.54 502.52,213.02 753.09,213.02 753.09,475.54" fill="#3d86b7" stroke="#081321" stroke-width="1.2"/>
+<polygon points="403.49,544.43 403.49,281.92 502.52,213.02 502.52,475.54" fill="#4596cd" stroke="#081321" stroke-width="1.2"/>
+<polygon points="502.52,475.54 753.09,475.54 654.06,544.43 403.49,544.43" fill="#3675a1" stroke="#081321" stroke-width="1.2"/>
+<polygon points="502.52,213.02 403.49,281.92 654.06,281.92 753.09,213.02" fill="#4eaae8" stroke="#081321" stroke-width="1.2"/>
+<polygon points="753.09,475.54 753.09,213.02 654.06,281.92 654.06,544.43" fill="#2f658a" stroke="#081321" stroke-width="1.2"/>
+<polygon points="654.06,544.43 654.06,281.92 403.49,281.92 403.49,544.43" fill="#35729c" stroke="#081321" stroke-width="1.2"/>
+      <text x="662.06" y="273.92" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Body Shell</text>
+    </g>
+
+    <g>
+      <polygon points="577.45,390.62 577.45,217.3 658.86,217.3 658.86,390.62" fill="#4eaca3" stroke="#081321" stroke-width="1.2"/>
+<polygon points="577.45,390.62 658.86,390.62 579.13,446.08 497.72,446.08" fill="#44978f" stroke="#081321" stroke-width="1.2"/>
+<polygon points="497.72,446.08 497.72,272.76 577.45,217.3 577.45,390.62" fill="#57c1b7" stroke="#081321" stroke-width="1.2"/>
+<polygon points="658.86,390.62 658.86,217.3 579.13,272.76 579.13,446.08" fill="#3b827b" stroke="#081321" stroke-width="1.2"/>
+<polygon points="577.45,217.3 497.72,272.76 579.13,272.76 658.86,217.3" fill="#63dacf" stroke="#081321" stroke-width="1.2"/>
+<polygon points="579.13,446.08 579.13,272.76 497.72,272.76 497.72,446.08" fill="#43938b" stroke="#081321" stroke-width="1.2"/>
+      <text x="587.13" y="264.76" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Diffuser Stage</text>
+    </g>
+
+    <g>
+      <polygon points="745.27,445.04 745.27,250.01 764.26,250.01 764.26,445.04" fill="#555c66" stroke="#081321" stroke-width="1.2"/>
+<polygon points="745.27,445.04 764.26,445.04 674.55,507.45 655.55,507.45" fill="#4b5159" stroke="#081321" stroke-width="1.2"/>
+<polygon points="655.55,507.45 655.55,312.42 745.27,250.01 745.27,445.04" fill="#606772" stroke="#081321" stroke-width="1.2"/>
+<polygon points="764.26,445.04 764.26,250.01 674.55,312.42 674.55,507.45" fill="#40454d" stroke="#081321" stroke-width="1.2"/>
+<polygon points="745.27,250.01 655.55,312.42 674.55,312.42 764.26,250.01" fill="#6c7481" stroke="#081321" stroke-width="1.2"/>
+<polygon points="674.55,507.45 674.55,312.42 655.55,312.42 655.55,507.45" fill="#494e57" stroke="#081321" stroke-width="1.2"/>
+      <text x="682.55" y="304.42" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Screw Bosses</text>
+    </g>
+
+    <g>
+      <polygon points="754.9,451.93 754.9,236.63 796.51,236.63 796.51,451.93" fill="#2b5d94" stroke="#081321" stroke-width="1.2"/>
+<polygon points="754.9,451.93 796.51,451.93 697.48,520.82 655.87,520.82" fill="#255282" stroke="#081321" stroke-width="1.2"/>
+<polygon points="655.87,520.82 655.87,305.53 754.9,236.63 754.9,451.93" fill="#3069a7" stroke="#081321" stroke-width="1.2"/>
+<polygon points="796.51,451.93 796.51,236.63 697.48,305.53 697.48,520.82" fill="#204770" stroke="#081321" stroke-width="1.2"/>
+<polygon points="754.9,236.63 655.87,305.53 697.48,305.53 796.51,236.63" fill="#3677bc" stroke="#081321" stroke-width="1.2"/>
+<polygon points="697.48,520.82 697.48,305.53 655.87,305.53 655.87,520.82" fill="#24507f" stroke="#081321" stroke-width="1.2"/>
+      <text x="705.48" y="297.53" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Cap</text>
+    </g>
+
+    <g>
+      <polygon points="615.22,245.99 615.22,170 664.06,170 664.06,245.99" fill="#3d86b7" stroke="#081321" stroke-width="1.2"/>
+<polygon points="615.22,245.99 664.06,245.99 641.59,261.62 592.75,261.62" fill="#3675a1" stroke="#081321" stroke-width="1.2"/>
+<polygon points="592.75,261.62 592.75,185.63 615.22,170 615.22,245.99" fill="#4596cd" stroke="#081321" stroke-width="1.2"/>
+<polygon points="664.06,245.99 664.06,170 641.59,185.63 641.59,261.62" fill="#2f658a" stroke="#081321" stroke-width="1.2"/>
+<polygon points="615.22,170 592.75,185.63 641.59,185.63 664.06,170" fill="#4eaae8" stroke="#081321" stroke-width="1.2"/>
+<polygon points="641.59,261.62 641.59,185.63 592.75,185.63 592.75,261.62" fill="#35729c" stroke="#081321" stroke-width="1.2"/>
+      <text x="649.59" y="177.63" fill="#d9e8f5" font-size="12" font-family="Arial, sans-serif">Inlet</text>
+    </g></g>
+  
+      <g transform="translate(72 718)">
+        <rect width="16" height="16" rx="3" fill="#f5d95d"/>
+        <text x="24" y="13" fill="#aec4d8" font-size="13" font-family="Arial, sans-serif">optics</text>
+      </g>
+
+      <g transform="translate(204 718)">
+        <rect width="16" height="16" rx="3" fill="#5fd2c7"/>
+        <text x="24" y="13" fill="#aec4d8" font-size="13" font-family="Arial, sans-serif">flowStage</text>
+      </g>
+
+      <g transform="translate(336 718)">
+        <rect width="16" height="16" rx="3" fill="#4ba3df"/>
+        <text x="24" y="13" fill="#aec4d8" font-size="13" font-family="Arial, sans-serif">body</text>
+      </g>
+
+      <g transform="translate(468 718)">
+        <rect width="16" height="16" rx="3" fill="#68707c"/>
+        <text x="24" y="13" fill="#aec4d8" font-size="13" font-family="Arial, sans-serif">hardware</text>
+      </g>
+
+      <g transform="translate(600 718)">
+        <rect width="16" height="16" rx="3" fill="#3472b5"/>
+        <text x="24" y="13" fill="#aec4d8" font-size="13" font-family="Arial, sans-serif">closure</text>
+      </g>
+</svg>
