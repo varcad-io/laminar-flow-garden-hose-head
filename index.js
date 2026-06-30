@@ -1,9 +1,36 @@
+import cadRuntime from "@varcad/cad-runtime";
 import {
-  buildPart,
+  assertReferenceVersionAvailable,
   defaultParameters,
   referenceBaseVariantOptions,
   referenceVersionOptions,
-} from './src/model.js';
+  resolveReferenceBaseVariant,
+} from "./src/referenceVersionRegistry.js";
+
+const VERSION_MODULE_PATHS = Object.freeze({
+  mk3: "/src/runtime-versions/mk3.js",
+  mk2_2: "/src/runtime-versions/mk2_2.js",
+  mk2_1: "/src/runtime-versions/mk2_1.js",
+  mk2_0: "/src/runtime-versions/mk2_0.js",
+});
+
+const resolveVersionModulePath = (params = {}) => {
+  const version = assertReferenceVersionAvailable(params);
+  return VERSION_MODULE_PATHS[version] || VERSION_MODULE_PATHS[defaultParameters.version];
+};
+
+const resolveSelection = (variables = {}) => {
+  const version = assertReferenceVersionAvailable(variables);
+  const resolved = {
+    ...defaultParameters,
+    ...variables,
+    version,
+  };
+  return {
+    ...resolved,
+    baseVariant: resolveReferenceBaseVariant(resolved),
+  };
+};
 
 export function getParameterDefinitions() {
   return [
@@ -29,6 +56,12 @@ export function getParameterDefinitions() {
   ];
 }
 
-export function main({ variables = {} } = {}) {
-  return buildPart({ ...defaultParameters, ...variables });
+export async function main({ variables = {} } = {}) {
+  const resolved = resolveSelection(variables);
+  const modulePath = resolveVersionModulePath(resolved);
+  const selectedModule = await cadRuntime.importModule(modulePath, { fromPath: "/index.js" });
+  if (typeof selectedModule?.buildPart !== "function") {
+    throw new Error(`Selected laminar runtime module does not export buildPart: ${modulePath}`);
+  }
+  return selectedModule.buildPart(resolved);
 }
